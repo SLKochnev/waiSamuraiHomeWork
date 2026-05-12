@@ -1,25 +1,77 @@
 import './App.css' 
 
-function App() {
-
-  const tasks = [
-  { id: 1, title: "Купить продукты на неделю", isDone: true },
-  { id: 2, title: "Полить цветы", isDone: true },
-  { id: 3, title: "Сходить на тренировку", isDone: false },
-  { id: 4, title: "Пропылисосить дома", isDone: false },
+// const tasks = [];
+// const tasks = null;
+const tasks = [
+  {
+    id: 1,
+    title: "Купить продукты на неделю",
+    isDone: true,
+    addedAt: "1 сентября",
+    priority: 2,
+  },
+  {
+    id: 2,
+    title: "Полить цветы",
+    isDone: true,
+    addedAt: "2 сентября",
+    priority: 2,
+  },
+  {
+    id: 3,
+    title: "Сходить на тренировку",
+    isDone: false,
+    addedAt: "3 сентября",
+    priority: 2,
+  },
 ]
 
-  const newTasksElement = tasks.map((task) => (
-      <li key={task.id} className='task-list-li'>
-        <div>{task.title}</div> 
-        <input type="checkbox" checked={task.isDone} />
-      </li>
-  ))
- 
+const priorityColors: Record<number, string> = {
+  0: "#d3dee4",  // Низкий - белый
+  1: "#b5cbff",  // Средний - светло-персиковый
+  2: "#8ac3ff",  // Высокий - персиковый
+  3: "#487cff",  // Срочный - оранжевый
+  4: "#3700ff",  // Наивысший - ярко-оранжевый
+}
+
+function App() {
+
+  if (tasks === null) {
+    return (
+      <div>
+        <h2>Загрузка...</h2>
+      </div>
+    )
+  } 
+
+  if (tasks.length === 0) {
+    return (
+      <div>
+        <h4>Задачи отсутствуют</h4>
+      </div>
+    )
+  } 
+
+  const tasksNew = tasks.map((task) => {
+    return (
+      <div key={task.id} className="task-card" style={{ backgroundColor: priorityColors[task.priority] }}>
+      <div>
+        <h4 style={{ display: "inline-block" }}>Заголовок:</h4><span style={{ marginLeft: "8px", textDecorationLine: task.isDone ? 'line-through' : 'none'}} >{task.title}</span>
+      </div>
+      <div>
+        <h4 style={{ display: "inline-block" }}>Статус:</h4><input style={{ marginLeft: "8px"}} type="checkbox" checked={task.isDone} />
+      </div>
+      <div>
+        <h4 style={{ display: "inline-block" }}>Дата создания:</h4><span style={{ marginLeft: "8px"}}>{task.addedAt}</span>
+      </div>
+      </div>
+    )
+  })
+  
+
   return (
-   <div className="task-list">
-      <h1>Список дел</h1>
-      <ul>{newTasksElement}</ul>
+   <div>
+      {tasksNew}
     </div>
   )
 }
