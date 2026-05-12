@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import './App.css' 
 
 // const tasks = [];
@@ -35,6 +36,8 @@ const priorityColors: Record<number, string> = {
 }
 
 function App() {
+  
+  const [selectedTaskId, setSelectedTaskId] = useState(0);
 
   if (tasks === null) {
     return (
@@ -52,9 +55,15 @@ function App() {
     )
   } 
 
+
+  
   const tasksNew = tasks.map((task) => {
     return (
-      <div key={task.id} className="task-card" style={{ backgroundColor: priorityColors[task.priority] }}>
+      <div 
+        key={task.id} 
+        className="task-card" 
+        style={{ backgroundColor: priorityColors[task.priority], border: task.id === selectedTaskId ? "2px solid blue" : "none" }} 
+        onClick={() => {setSelectedTaskId(task.id)}}>
       <div>
         <h4 style={{ display: "inline-block" }}>Заголовок:</h4><span style={{ marginLeft: "8px", textDecorationLine: task.isDone ? 'line-through' : 'none'}} >{task.title}</span>
       </div>
@@ -70,7 +79,9 @@ function App() {
   
 
   return (
+
    <div>
+      <button onClick={ () => {setSelectedTaskId(0)}} className='button-close'>Сбросить выделение</button>
       {tasksNew}
     </div>
   )
